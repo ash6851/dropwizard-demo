@@ -1,0 +1,42 @@
+buildscript {
+    repositories {
+        mavenCentral artifactUrls: ["${nexusMavenUrl}"]
+    }
+    dependencies {
+        classpath 'com.github.jengelman.gradle.plugins:shadow:2.0.1'
+    }
+}
+
+apply plugin: 'com.github.johnrengelman.shadow'
+apply plugin: 'java'
+apply plugin: 'application'
+apply plugin: 'maven-publish'
+apply plugin: 'maven'
+
+version = "${version}"
+sourceCompatibility = '1.8'
+defaultTasks 'clean', 'build', 'shadowJar'
+mainClassName = 'com.demo.HelloWorldApplication'
+
+
+repositories {
+    mavenCentral artifactUrls: ["${nexusMavenUrl}"]
+}
+shadowJar {
+    baseName = 'hello-world'
+    version = "${version}"
+    classifier = null
+    mergeServiceFiles()
+}
+
+dependencies {
+    compile 'io.dropwizard:dropwizard-core:1.1.4'
+
+    testCompile 'junit:junit:4.+'
+    testCompile "org.mockito:mockito-core:2.+"
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '4.1'
+}
+
